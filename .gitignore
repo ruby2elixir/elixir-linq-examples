@@ -4,3 +4,4 @@ erl_crash.dump
 *.ez
 *.sublime-project
 *.sublime-workspace
+.elixir_ls
