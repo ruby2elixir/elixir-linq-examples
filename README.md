@@ -1982,7 +1982,7 @@ test "linq44: GroupBy - Comparer" do
 
   order_groups = anagrams
   |> Enum.group_by(fn x -> x
-    |> String.strip
+    |> String.trim
     |> String.downcase
     |> String.codepoints
     |> Enum.sort
@@ -2022,7 +2022,7 @@ test "linq45: GroupBy - Comparer, Mapped" do
 
   order_groups = anagrams
   |> Enum.group_by(fn x -> x
-      |> String.strip
+      |> String.trim
       |> String.downcase
       |> String.codepoints
       |> Enum.sort
@@ -2145,7 +2145,7 @@ test "linq48: Union - 1" do
   numbers_a = [0, 2, 4, 5, 6, 8, 9]
   numbers_b = [1, 3, 5, 7, 8]
 
-  unique_numbers = Set.union(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
+  unique_numbers = MapSet.union(Enum.into(numbers_a, MapSet.new), Enum.into(numbers_b, MapSet.new)) |> Enum.sort
 
   IO.puts "Unique numbers from both arrays:"
   for n <- unique_numbers, do: IO.puts n
@@ -2197,13 +2197,13 @@ test "linq49: Union - 2" do
   products = get_product_list()
   customers = get_customer_list()
 
-  product_first_chars = products 
+  product_first_chars = products
   |> Enum.map(fn x -> String.at(x.product_name, 0) end)
 
   customer_first_chars = customers
   |> Enum.map(fn x -> String.at(x.name, 0) end)
 
-  unique_first_chars = Set.union(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
+  unique_first_chars = MapSet.union(Enum.into(product_first_chars, MapSet.new), Enum.into(customer_first_chars, MapSet.new)) |> Enum.sort
 
   IO.puts "Unique first letters from Product names and Customer names:"
   for c <- unique_first_chars, do: IO.puts c
@@ -2262,7 +2262,7 @@ test "linq50: Intersect - 1" do
   numbers_a = [0, 2, 4, 5, 6, 8, 9]
   numbers_b = [1, 3, 5, 7, 8]
 
-  common_numbers = Set.intersection(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
+  common_numbers = MapSet.intersection(Enum.into(numbers_a, MapSet.new), Enum.into(numbers_b, MapSet.new)) |> Enum.sort
 
   IO.puts "Common numbers shared by both arrays:"
   for n <- common_numbers, do: IO.puts n
@@ -2306,13 +2306,13 @@ test "linq51: Intersect - 2" do
   products = get_product_list()
   customers = get_customer_list()
 
-  product_first_chars = products 
+  product_first_chars = products
   |> Enum.map(fn x -> String.at(x.product_name, 0) end)
 
   customer_first_chars = customers
   |> Enum.map(fn x -> String.at(x.name, 0) end)
 
-  common_first_chars = Set.intersection(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
+  common_first_chars = MapSet.intersection(Enum.into(product_first_chars, MapSet.new), Enum.into(customer_first_chars, MapSet.new)) |> Enum.sort
 
   IO.puts "Common first letters from Product names and Customer names:"
   for c <- common_first_chars, do: IO.puts c
@@ -2366,7 +2366,7 @@ test "linq52: Except - 1" do
   numbers_a = [0, 2, 4, 5, 6, 8, 9]
   numbers_b = [1, 3, 5, 7, 8]
 
-  a_only_numbers = Set.difference(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
+  a_only_numbers = MapSet.difference(Enum.into(numbers_a, MapSet.new), Enum.into(numbers_b, MapSet.new)) |> Enum.sort
 
   IO.puts "Numbers in first array but not second array:"
   for n <- a_only_numbers, do: IO.puts n
@@ -2413,13 +2413,13 @@ test "linq53: Except - 2" do
   products = get_product_list()
   customers = get_customer_list()
 
-  product_first_chars = products 
+  product_first_chars = products
   |> Enum.map(fn x -> String.at(x.product_name, 0) end)
 
   customer_first_chars = customers
   |> Enum.map(fn x -> String.at(x.name, 0) end)
 
-  product_only_first_chars = Set.difference(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
+  product_only_first_chars = MapSet.difference(Enum.into(product_first_chars, MapSet.new), Enum.into(customer_first_chars, MapSet.new)) |> Enum.sort
 
   IO.puts "First letters from Product names, but not from Customer names:"
   for c <- product_only_first_chars, do: IO.puts c
@@ -3917,7 +3917,7 @@ test "linq99: Deferred Execution", %{counter_agent: pid} do
   # and mimic the behavior seen in LINQ
   q = numbers |> Stream.map(fn _ -> Counter.inc(pid) end)
 
-  values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}" 
+  values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}"
   |> IO.puts
 
   assert "0 10 10" == values
@@ -3961,7 +3961,7 @@ test "linq100: Immediate Execution", %{counter_agent: pid} do
   # and mimic the behavior seen in LINQ
   q = numbers |> Enum.map(fn _ -> Counter.inc(pid) end)
 
-  values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}" 
+  values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}"
   |> IO.puts
 
   assert "10 10 10" == values
@@ -4055,7 +4055,7 @@ LINQ - Join Operators
 ### Elixir utils added
 ```elixir
 def left_outer_join(list1, list2, equality, mapper1 \\ & &1, mapper2 \\ & &1) do
-  Enum.reduce(list1, [], fn a, acc -> 
+  Enum.reduce(list1, [], fn a, acc ->
     matches = list2 |> Enum.filter(fn b -> equality.(a,b) end)
     if Enum.empty?(matches) do
       [{mapper1.(a), nil} | acc]
@@ -4064,7 +4064,7 @@ def left_outer_join(list1, list2, equality, mapper1 \\ & &1, mapper2 \\ & &1) do
       entries = matches |> Enum.map(& {mapped_a, mapper2.(&1)})
       entries ++ acc
     end
-  end) 
+  end)
     |> Enum.reverse
 end
 ```

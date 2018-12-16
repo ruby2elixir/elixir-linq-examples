@@ -82,7 +82,7 @@ defmodule ElixirLinqExamples.Grouping do
 
     order_groups = anagrams
     |> Enum.group_by(fn x -> x
-      |> String.strip
+      |> String.trim
       |> String.downcase
       |> String.codepoints
       |> Enum.sort
@@ -98,7 +98,7 @@ defmodule ElixirLinqExamples.Grouping do
 
     order_groups = anagrams
     |> Enum.group_by(fn x -> x
-        |> String.strip
+        |> String.trim
         |> String.downcase
         |> String.codepoints
         |> Enum.sort

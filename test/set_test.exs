@@ -2,7 +2,7 @@ defmodule ElixirLinqExamples.Set do
   use ExUnit.Case
 
   import ElixirLinqExamples.Data
-  
+
   test "linq46: Distinct - 1" do
     factors_of_300 = [2, 2, 3, 5, 5]
 
@@ -29,7 +29,7 @@ defmodule ElixirLinqExamples.Set do
     numbers_a = [0, 2, 4, 5, 6, 8, 9]
     numbers_b = [1, 3, 5, 7, 8]
 
-    unique_numbers = Set.union(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
+    unique_numbers = MapSet.union(Enum.into(numbers_a, MapSet.new), Enum.into(numbers_b, MapSet.new)) |> Enum.sort
 
     # IO.puts "Unique numbers from both arrays:"
     # for n <- unique_numbers, do: IO.puts n
@@ -41,13 +41,13 @@ defmodule ElixirLinqExamples.Set do
     products = get_product_list()
     customers = get_customer_list()
 
-    product_first_chars = products 
+    product_first_chars = products
     |> Enum.map(fn x -> String.at(x.product_name, 0) end)
 
     customer_first_chars = customers
     |> Enum.map(fn x -> String.at(x.name, 0) end)
 
-    unique_first_chars = Set.union(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
+    unique_first_chars = MapSet.union(Enum.into(product_first_chars, MapSet.new), Enum.into(customer_first_chars, MapSet.new)) |> Enum.sort
 
     # IO.puts "Unique first letters from Product names and Customer names:"
     # for c <- unique_first_chars, do: IO.puts c
@@ -59,7 +59,7 @@ defmodule ElixirLinqExamples.Set do
     numbers_a = [0, 2, 4, 5, 6, 8, 9]
     numbers_b = [1, 3, 5, 7, 8]
 
-    common_numbers = Set.intersection(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
+    common_numbers = MapSet.intersection(Enum.into(numbers_a, MapSet.new), Enum.into(numbers_b, MapSet.new)) |> Enum.sort
 
     # IO.puts "Common numbers shared by both arrays:"
     # for n <- common_numbers, do: IO.puts n
@@ -71,13 +71,13 @@ defmodule ElixirLinqExamples.Set do
     products = get_product_list()
     customers = get_customer_list()
 
-    product_first_chars = products 
+    product_first_chars = products
     |> Enum.map(fn x -> String.at(x.product_name, 0) end)
 
     customer_first_chars = customers
     |> Enum.map(fn x -> String.at(x.name, 0) end)
 
-    common_first_chars = Set.intersection(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
+    common_first_chars = MapSet.intersection(Enum.into(product_first_chars, MapSet.new), Enum.into(customer_first_chars, MapSet.new)) |> Enum.sort
 
     # IO.puts "Common first letters from Product names and Customer names:"
     # for c <- common_first_chars, do: IO.puts c
@@ -89,7 +89,7 @@ defmodule ElixirLinqExamples.Set do
     numbers_a = [0, 2, 4, 5, 6, 8, 9]
     numbers_b = [1, 3, 5, 7, 8]
 
-    a_only_numbers = Set.difference(Enum.into(numbers_a, HashSet.new), Enum.into(numbers_b, HashSet.new)) |> Enum.sort
+    a_only_numbers = MapSet.difference(Enum.into(numbers_a, MapSet.new), Enum.into(numbers_b, MapSet.new)) |> Enum.sort
 
     # IO.puts "Numbers in first array but not second array:"
     # for n <- a_only_numbers, do: IO.puts n
@@ -101,13 +101,13 @@ defmodule ElixirLinqExamples.Set do
     products = get_product_list()
     customers = get_customer_list()
 
-    product_first_chars = products 
+    product_first_chars = products
     |> Enum.map(fn x -> String.at(x.product_name, 0) end)
 
     customer_first_chars = customers
     |> Enum.map(fn x -> String.at(x.name, 0) end)
 
-    product_only_first_chars = Set.difference(Enum.into(product_first_chars, HashSet.new), Enum.into(customer_first_chars, HashSet.new)) |> Enum.sort
+    product_only_first_chars = MapSet.difference(Enum.into(product_first_chars, MapSet.new), Enum.into(customer_first_chars, MapSet.new)) |> Enum.sort
 
     # IO.puts "First letters from Product names, but not from Customer names:"
     # for c <- product_only_first_chars, do: IO.puts c
