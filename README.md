@@ -744,7 +744,7 @@ test "linq16: SelectMany - Compound from 3" do
   orders =
     for c <- customers,
         o <- c.orders,
-        Timex.Date.compare(o.orderdate, Timex.Date.from({1998, 1, 1})) >= 0,
+        Date.compare(o.orderdate, Date.from_erl!({1998, 1, 1})) in [:gt, :eq],
         do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
   IO.inspect orders
@@ -826,14 +826,14 @@ public void Linq18()
 test "linq18: SelectMany - Multiple from" do
   customers = get_customer_list()
 
-  cutoff_date = Timex.Date.from({1997, 1, 1})
+  cutoff_date = Date.from_erl!({1997, 1, 1})
 
   orders =
     for c <- customers,
         o <- c.orders,
         c.region == "WA",
-        Timex.Date.compare(o.orderdate, cutoff_date) >= 0,
-        do: %{customer_id: c.id, order_id: o.id, total: o.total}
+        Date.compare(o.orderdate, cutoff_date) in [:gt, :eq],
+        do: %{customer_id: c.id, order_id: o.id, total: o.total, orderdate: o.orderdate}
 
   IO.inspect orders
 
@@ -3917,7 +3917,7 @@ test "linq99: Deferred Execution", %{counter_agent: pid} do
   # and mimic the behavior seen in LINQ
   q = numbers |> Stream.map(fn _ -> Counter.inc(pid) end)
 
-  values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}"
+  values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}" 
   |> IO.puts
 
   assert "0 10 10" == values
@@ -3961,7 +3961,7 @@ test "linq100: Immediate Execution", %{counter_agent: pid} do
   # and mimic the behavior seen in LINQ
   q = numbers |> Enum.map(fn _ -> Counter.inc(pid) end)
 
-  values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}"
+  values = "#{Counter.get(pid)} #{Enum.count(q)} #{Counter.get(pid)}" 
   |> IO.puts
 
   assert "10 10 10" == values
@@ -4055,7 +4055,7 @@ LINQ - Join Operators
 ### Elixir utils added
 ```elixir
 def left_outer_join(list1, list2, equality, mapper1 \\ & &1, mapper2 \\ & &1) do
-  Enum.reduce(list1, [], fn a, acc ->
+  Enum.reduce(list1, [], fn a, acc -> 
     matches = list2 |> Enum.filter(fn b -> equality.(a,b) end)
     if Enum.empty?(matches) do
       [{mapper1.(a), nil} | acc]
@@ -4064,7 +4064,7 @@ def left_outer_join(list1, list2, equality, mapper1 \\ & &1, mapper2 \\ & &1) do
       entries = matches |> Enum.map(& {mapped_a, mapper2.(&1)})
       entries ++ acc
     end
-  end)
+  end) 
     |> Enum.reverse
 end
 ```
