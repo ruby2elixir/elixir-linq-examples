@@ -124,7 +124,7 @@ defmodule ElixirLinqExamples.Projection do
     orders =
       for c <- customers,
           o <- c.orders,
-          Timex.Date.compare(o.orderdate, Timex.Date.from({1998, 1, 1})) >= 0,
+          Date.compare(o.orderdate, Date.from_erl!({1998, 1, 1})) in [:gt, :eq],
           do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
     #IO.inspect orders
@@ -149,14 +149,14 @@ defmodule ElixirLinqExamples.Projection do
   test "linq18: SelectMany - Multiple from" do
     customers = get_customer_list()
 
-    cutoff_date = Timex.Date.from({1997, 1, 1})
+    cutoff_date = Date.from_erl!({1997, 1, 1})
 
     orders =
       for c <- customers,
           o <- c.orders,
           c.region == "WA",
-          Timex.Date.compare(o.orderdate, cutoff_date) >= 0,
-          do: %{customer_id: c.id, order_id: o.id, total: o.total}
+          Date.compare(o.orderdate, cutoff_date) in [:gt, :eq],
+          do: %{customer_id: c.id, order_id: o.id, total: o.total, orderdate: o.orderdate}
 
     #IO.inspect orders
 
