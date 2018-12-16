@@ -46,9 +46,10 @@ defmodule ElixirLinqExamples.Element do
   test "linq64: ElementAt" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    fourth_low_num = numbers
-    |> Enum.filter(fn x -> x > 5 end)
-    |> Enum.at(1)
+    fourth_low_num =
+      numbers
+      |> Enum.filter(fn x -> x > 5 end)
+      |> Enum.at(1)
 
     # IO.puts "Second number > 5: #{fourth_low_num}"
 

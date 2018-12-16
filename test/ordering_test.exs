@@ -26,8 +26,9 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq30: OrderBy - Simple 3" do
     products = get_product_list()
 
-    sorted_products = products
-    |> Enum.sort_by(fn x -> x.product_name end)
+    sorted_products =
+      products
+      |> Enum.sort_by(fn x -> x.product_name end)
 
     # IO.inspect sorted_products
 
@@ -35,7 +36,7 @@ defmodule ElixirLinqExamples.Ordering do
   end
 
   test "linq31: OrderBy - Comparer" do
-    words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"];
+    words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
     sorted_words = words |> Enum.sort_by(&String.downcase/1)
 
@@ -47,7 +48,7 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq32: OrderByDescending - Simple 1" do
     doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
 
-    sorted_doubles = doubles |> Enum.sort |> Enum.reverse
+    sorted_doubles = doubles |> Enum.sort() |> Enum.reverse()
 
     # IO.puts "The doubles from highest to lowest:"
     # for d <- sorted_doubles, do: IO.puts d
@@ -78,22 +79,25 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq35: ThenBy - Simple" do
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-    sorted_digits = digits
-    |> Enum.sort
-    |> Enum.sort_by(fn x -> String.length(x) end)
+    sorted_digits =
+      digits
+      |> Enum.sort()
+      |> Enum.sort_by(fn x -> String.length(x) end)
 
     # IO.puts "Sorted digits:"
     # for d <- sorted_digits, do: IO.puts d
 
-    assert ["one", "six", "two", "five", "four", "nine", "zero", "eight", "seven", "three"] == sorted_digits
+    assert ["one", "six", "two", "five", "four", "nine", "zero", "eight", "seven", "three"] ==
+             sorted_digits
   end
 
   test "linq36: ThenBy - Comparer" do
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
-    sorted_words = words
-    |> Enum.sort_by(&String.downcase/1)
-    |> Enum.sort_by(&String.length/1)
+    sorted_words =
+      words
+      |> Enum.sort_by(&String.downcase/1)
+      |> Enum.sort_by(&String.length/1)
 
     # IO.inspect sorted_words
 
@@ -103,9 +107,10 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq37: ThenByDescending - Simple" do
     products = get_product_list()
 
-    sorted_products = products
-    |> Enum.sort(fn x,y -> x.unit_price >= y.unit_price end)
-    |> Enum.sort_by(&(&1.category))
+    sorted_products =
+      products
+      |> Enum.sort(fn x, y -> x.unit_price >= y.unit_price end)
+      |> Enum.sort_by(& &1.category)
 
     # IO.inspect sorted_products
 
@@ -115,9 +120,10 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq38: ThenByDescending - Comparer" do
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
-    sorted_words = words
-    |> Enum.sort(fn x,y -> String.downcase(x) >= String.downcase(y) end)
-    |> Enum.sort_by(&String.length/1)
+    sorted_words =
+      words
+      |> Enum.sort(fn x, y -> String.downcase(x) >= String.downcase(y) end)
+      |> Enum.sort_by(&String.length/1)
 
     # IO.inspect sorted_words
 
@@ -127,9 +133,10 @@ defmodule ElixirLinqExamples.Ordering do
   test "linq39: Reverse" do
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-    reversed_i_digits = digits
-    |> Enum.filter(fn x -> String.at(x, 1) == "i" end)
-    |> Enum.reverse
+    reversed_i_digits =
+      digits
+      |> Enum.filter(fn x -> String.at(x, 1) == "i" end)
+      |> Enum.reverse()
 
     # IO.puts "A backwards list of the digits with a second character of 'i':"
     # for d <- reversed_i_digits, do: IO.puts d

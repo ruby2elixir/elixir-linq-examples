@@ -16,17 +16,18 @@ defmodule ElixirLinqExamples.Quantifiers do
   test "linq69: Any - Grouped" do
     products = get_product_list()
 
-    product_groups = products
-    |> Enum.group_by(fn x -> x.category end)
-    |> Enum.filter(fn {_,prods} -> prods |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
-    |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
+    product_groups =
+      products
+      |> Enum.group_by(fn x -> x.category end)
+      |> Enum.filter(fn {_, prods} -> prods |> Enum.any?(fn p -> p.units_in_stock == 0 end) end)
+      |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
     # IO.inspect product_groups
 
     assert 3 == length(product_groups)
-    first_group = product_groups|> Enum.at(0)
+    first_group = product_groups |> Enum.at(0)
     assert first_group.category == "Condiments"
-    assert first_group.products |> Enum.count == 12
+    assert first_group.products |> Enum.count() == 12
   end
 
   test "linq70: All - Simple" do
@@ -42,10 +43,11 @@ defmodule ElixirLinqExamples.Quantifiers do
   test "linq72: All - Grouped" do
     products = get_product_list()
 
-    product_groups = products
-    |> Enum.group_by(fn x -> x.category end)
-    |> Enum.filter(fn {_,prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
-    |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
+    product_groups =
+      products
+      |> Enum.group_by(fn x -> x.category end)
+      |> Enum.filter(fn {_, prods} -> prods |> Enum.all?(fn p -> p.units_in_stock > 0 end) end)
+      |> Enum.map(fn {cat, prods} -> %{category: cat, products: prods} end)
 
     # IO.inspect product_groups
 

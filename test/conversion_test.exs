@@ -2,14 +2,14 @@ defmodule ElixirLinqExamples.Conversion do
   use ExUnit.Case
 
   test "linq54: ToArray" do
-    doubles = [1.7, 2.3, 1.9, 4.1, 2.9];
+    doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
 
-    sorted_doubles = doubles |> Enum.sort(& &1 > &2)
+    sorted_doubles = doubles |> Enum.sort(&(&1 > &2))
 
     # IO.puts "Every other double from highest to lowest:"
     # for d <- (sorted_doubles |> Enum.take_every(2)), do: IO.puts d
 
-    assert [4.1, 2.3, 1.7] == (sorted_doubles |> Enum.take_every(2))
+    assert [4.1, 2.3, 1.7] == sorted_doubles |> Enum.take_every(2)
   end
 
   test "linq55: ToList" do
@@ -32,11 +32,14 @@ defmodule ElixirLinqExamples.Conversion do
   end
 
   test "linq56: ToDictionary" do
-    score_records = [%{name: "Alice", score: 50},
-                     %{name: "Bob", score: 40},
-                     %{name: "Cathy", score: 45}]
+    score_records = [
+      %{name: "Alice", score: 50},
+      %{name: "Bob", score: 40},
+      %{name: "Cathy", score: 45}
+    ]
 
-    score_records_dict = score_records |> Enum.map(fn x -> {x.name, x.score} end) |> Enum.into(%{})
+    score_records_dict =
+      score_records |> Enum.map(fn x -> {x.name, x.score} end) |> Enum.into(%{})
 
     ## If using Erlang 17, use HashDicts because https://gist.github.com/BinaryMuse/bb9f2cbf692e6cfa4841
     ## score_records_dict = score_records |> Enum.map(fn x -> {x.name, x} end) |> Enum.into(HashDict.new)

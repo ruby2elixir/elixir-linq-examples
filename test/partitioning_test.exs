@@ -4,7 +4,7 @@ defmodule ElixirLinqExamples.Partitioning do
   import ElixirLinqExamples.Data
 
   test "linq20: Take - Simple" do
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0];
+    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
     first_3_numbers = numbers |> Enum.take(3)
 
@@ -18,10 +18,12 @@ defmodule ElixirLinqExamples.Partitioning do
     customers = get_customer_list()
 
     first_3_wa_orders =
-      (for c <- customers,
-           o <- c.orders,
-           c.region == "WA",
-           do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate})
+      for(
+        c <- customers,
+        o <- c.orders,
+        c.region == "WA",
+        do: %{customer_id: c.id, order_id: o.id, order_date: o.orderdate}
+      )
       |> Enum.take(3)
 
     # IO.puts "First 3 orders in WA:"
@@ -55,8 +57,9 @@ defmodule ElixirLinqExamples.Partitioning do
     # IO.puts "All but first 2 orders in WA:"
     # for o <- all_but_first_2_orders, do: IO.inspect o
 
-    assert 17 == length all_but_first_2_orders
+    assert 17 == length(all_but_first_2_orders)
   end
+
   test "linq24: TakeWhile - Simple" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -71,10 +74,11 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq25: TakeWhile - Indexed" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    first_small_numbers = numbers
-    |> Enum.with_index
-    |> Enum.take_while(fn {n, index} -> n >= index end)
-    |> Enum.map(fn {x,_} -> x end)
+    first_small_numbers =
+      numbers
+      |> Enum.with_index()
+      |> Enum.take_while(fn {n, index} -> n >= index end)
+      |> Enum.map(fn {x, _} -> x end)
 
     # IO.puts "First numbers not less than their position:"
     # for n <- first_small_numbers, do: IO.puts n
@@ -96,10 +100,11 @@ defmodule ElixirLinqExamples.Partitioning do
   test "linq27: SkipWhile - Indexed" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    later_numbers = numbers
-    |> Enum.with_index
-    |> Enum.drop_while(fn {n, index} -> n >= index end)
-    |> Enum.map(fn {x,_} -> x end)
+    later_numbers =
+      numbers
+      |> Enum.with_index()
+      |> Enum.drop_while(fn {n, index} -> n >= index end)
+      |> Enum.map(fn {x, _} -> x end)
 
     # IO.puts "All elements starting from first element less than its position:"
     # for n <- later_numbers, do: IO.puts n

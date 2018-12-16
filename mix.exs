@@ -2,12 +2,14 @@ defmodule ElixirLinqExamples.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :elixir_linq_examples,
-     version: "0.0.1",
-     elixir: "~> 1.0",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :elixir_linq_examples,
+      version: "0.0.1",
+      elixir: "~> 1.0",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application
@@ -29,7 +31,7 @@ defmodule ElixirLinqExamples.Mixfile do
   defp deps do
     [
       {:poison, "~> 3.0"},
-      {:timex, "~> 3.0"},
+      {:timex, "~> 3.0"}
     ]
   end
 end

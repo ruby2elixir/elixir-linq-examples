@@ -4,19 +4,19 @@ defmodule ElixirLinqExamples.Projection do
   import ElixirLinqExamples.Data
 
   test "linq6: Select - Simple 1" do
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0];
-    num_plus_one = numbers |> Enum.map(&(&1+1))
+    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+    num_plus_one = numbers |> Enum.map(&(&1 + 1))
 
     # IO.puts "Numbers + 1:"
     # for n <- num_plus_one, do: IO.puts n
 
-    assert [6 ,5 ,2 ,4 ,10 ,9 ,7 ,8 ,3 ,1] == num_plus_one
+    assert [6, 5, 2, 4, 10, 9, 7, 8, 3, 1] == num_plus_one
   end
 
   test "linq7: Select - Simple 2" do
     products = get_product_list()
 
-    product_names = products |> Enum.map(&(&1.product_name))
+    product_names = products |> Enum.map(& &1.product_name)
 
     # IO.puts "Product Names:"
     # for n <- product_names, do: IO.puts n
@@ -25,10 +25,10 @@ defmodule ElixirLinqExamples.Projection do
   end
 
   test "linq8: Select - Transformation" do
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0];
-    strings = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+    strings = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 
-    text_nums = numbers |> Enum.map(&(elem(strings,&1)))
+    text_nums = numbers |> Enum.map(&elem(strings, &1))
 
     # IO.puts "Number strings:"
     # for n <- text_nums, do: IO.puts n
@@ -39,7 +39,8 @@ defmodule ElixirLinqExamples.Projection do
   test "linq9: Select - Anonymous Types 1" do
     words = ["aPPLE", "BlUeBeRrY", "cHeRry"]
 
-    upper_lower_words = words |> Enum.map(fn x -> %{lower: String.downcase(x), upper: String.upcase(x)} end)
+    upper_lower_words =
+      words |> Enum.map(fn x -> %{lower: String.downcase(x), upper: String.upcase(x)} end)
 
     # for n <- upper_lower_words, do: IO.puts "Uppercase: #{n.upper}, Lowercase: #{n.lower}" end
 
@@ -50,17 +51,22 @@ defmodule ElixirLinqExamples.Projection do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
     strings = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 
-    digit_odd_evens = numbers |> Enum.map(fn x -> %{digit: elem(strings, x), even: rem(x, 2) == 0} end)
+    digit_odd_evens =
+      numbers |> Enum.map(fn x -> %{digit: elem(strings, x), even: rem(x, 2) == 0} end)
 
     # for n <- digit_odd_evens, do: IO.puts "The digit #{n.digit} is #{n.even && "even" || "odd"}."
 
-    assert Enum.count(digit_odd_evens, &(&1.even)) == 5
+    assert Enum.count(digit_odd_evens, & &1.even) == 5
   end
 
   test "linq11: Select - Anonymous Types 3" do
     products = get_product_list()
 
-    product_infos = products |> Enum.map(fn x -> %{product_name: x.product_name, category: x.category, price: x.unit_price} end)
+    product_infos =
+      products
+      |> Enum.map(fn x ->
+        %{product_name: x.product_name, category: x.category, price: x.unit_price}
+      end)
 
     # for n <- product_infos, do: IO.puts "#{n.product_name} is in the category #{n.category} and costs #{n.price} per unit."
 
@@ -70,10 +76,11 @@ defmodule ElixirLinqExamples.Projection do
   test "linq12: Select - Indexed" do
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
-    nums_in_place = numbers
-    |> Stream.with_index
-    |> Stream.map(fn {x,idx} -> %{num: x, in_place: x == idx} end)
-    |> Enum.to_list
+    nums_in_place =
+      numbers
+      |> Stream.with_index()
+      |> Stream.map(fn {x, idx} -> %{num: x, in_place: x == idx} end)
+      |> Enum.to_list()
 
     # IO.puts "Number: In-place?"
     # for n <- nums_in_place, do: IO.puts "#{n.num}: #{n.in_place}"
@@ -113,7 +120,7 @@ defmodule ElixirLinqExamples.Projection do
           o <- c.orders,
           do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
-    #IO.inspect orders
+    # IO.inspect orders
 
     assert length(orders) == 830
   end
@@ -127,7 +134,7 @@ defmodule ElixirLinqExamples.Projection do
           Date.compare(o.orderdate, Date.from_erl!({1998, 1, 1})) in [:gt, :eq],
           do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
-    #IO.inspect orders
+    # IO.inspect orders
 
     assert length(orders) == 270
   end
@@ -141,7 +148,7 @@ defmodule ElixirLinqExamples.Projection do
           elem(Float.parse(o.total), 0) >= 2000.0,
           do: %{customer_id: c.id, order_id: o.id, total: o.total}
 
-    #IO.inspect orders
+    # IO.inspect orders
 
     assert length(orders) == 185
   end
@@ -158,7 +165,7 @@ defmodule ElixirLinqExamples.Projection do
           Date.compare(o.orderdate, cutoff_date) in [:gt, :eq],
           do: %{customer_id: c.id, order_id: o.id, total: o.total, orderdate: o.orderdate}
 
-    #IO.inspect orders
+    # IO.inspect orders
 
     assert length(orders) == 17
   end
